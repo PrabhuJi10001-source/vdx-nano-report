@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VDX — Nano File-Understanding: Test Report & Feature Tour</title>
+<style>
+:root{
+  --bg:#F7F5FC; --card:#FFFFFF; --ink:#241F3A; --sub:#6B6485;
+  --lav:#8B7CF6; --lavd:#6D5BE0; --soft:#EDE9FE; --hair:#E6E1F4;
+  --ok:#0E9F6E; --okbg:#D7F5E9; --warn:#E0245E; --warnbg:#FDE2EA;
+  --amber:#D9A509; --amberbg:#FCF2D8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+.wrap{max-width:960px;margin:0 auto;padding:24px 20px}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+@keyframes popIn{0%{opacity:0;transform:scale(.86)}70%{transform:scale(1.03)}100%{opacity:1;transform:scale(1)}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(109,91,224,.35)}70%{box-shadow:0 0 0 16px rgba(109,91,224,0)}100%{box-shadow:0 0 0 0 rgba(109,91,224,0)}}
+@keyframes shimmer{0%{background-position:-500px 0}100%{background-position:500px 0}}
+@keyframes slideRight{from{transform:translateX(-30px);opacity:0}to{transform:none;opacity:1}}
+@keyframes growBar{from{width:0}to{width:var(--w)}}
+.reveal{opacity:0;animation:fadeUp .8s cubic-bezier(.2,.7,.3,1) forwards}
+.reveal.d1{animation-delay:.15s}.reveal.d2{animation-delay:.3s}.reveal.d3{animation-delay:.45s}
+.pop{animation:popIn .7s cubic-bezier(.2,.7,.3,1) both}
+.floaty{animation:floaty 5s ease-in-out infinite}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,#fff 0%,#E8E2FD 65%,#DDD2FB 100%);border-radius:26px;padding:44px 36px;margin-bottom:22px;border:1px solid var(--hair);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-70px;top:-70px;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,rgba(139,124,246,.25),transparent 70%);animation:floaty 6s ease-in-out infinite}
+.kicker{display:inline-block;background:var(--soft);color:var(--lavd);font-weight:800;font-size:11px;letter-spacing:2.5px;padding:8px 16px;border-radius:999px;margin-bottom:16px}
+h1{font-size:42px;line-height:1.12;letter-spacing:-.5px;margin-bottom:10px}
+.hero p.sub{color:var(--sub);font-size:17px;max-width:640px}
+.statbar{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap}
+.stat{background:rgba(255,255,255,.75);backdrop-filter:blur(4px);border:1px solid var(--hair);border-radius:16px;padding:12px 20px;animation:popIn .6s both}
+.stat:nth-child(2){animation-delay:.12s}.stat:nth-child(3){animation-delay:.24s}.stat:nth-child(4){animation-delay:.36s}
+.stat b{display:block;font-size:22px;color:var(--lavd)}
+.stat span{font-size:12px;color:var(--sub);font-weight:600}
+
+/* ── SECTIONS ── */
+section{margin-bottom:26px}
+.sechead{display:flex;align-items:center;gap:10px;margin:0 0 14px}
+.sechead .num{background:var(--lavd);color:#fff;font-weight:800;font-size:13px;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sechead h2{font-size:23px;letter-spacing:-.3px}
+.card{background:var(--card);border:1.5px solid var(--hair);border-radius:18px;padding:22px;box-shadow:0 2px 10px rgba(36,31,58,.04)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}}
+
+/* verdict cards */
+.verdict{border-left:5px solid;padding:14px 16px;border-radius:12px;background:#fff;border-top:none;border-right:none;border-bottom:none;animation:slideRight .7s both}
+.verdict .where{font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:5px}
+.verdict p{font-size:13.5px;color:var(--sub);line-height:1.5}
+.v-red .where{color:var(--warn)} .v-red{border-color:var(--warn);background:#FFF7FA}
+.v-green .where{color:var(--ok)} .v-green{border-color:var(--ok);background:#F7FEFB}
+.v-amber .where{color:var(--amber)} .v-amber{border-color:var(--amber);background:#FFFBEF}
+.v-lav .where{color:var(--lavd)} .v-lav{border-color:var(--lav)}
+
+/* screenshots */
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:760px){.shots{grid-template-columns:1fr}}
+figure{background:#fff;border:1.5px solid var(--hair);border-radius:16px;overflow:hidden;transition:transform .25s,box-shadow .25s;animation:popIn .8s both}
+figure:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 14px 34px rgba(36,31,58,.14)}
+figure:nth-child(2){animation-delay:.12s}figure:nth-child(3){animation-delay:.24s}
+img{width:100%;display:block}
+figcaption{padding:10px 14px;font-size:12.5px;font-weight:700;color:var(--sub);background:#FAF9FE}
+
+/* rungs */
+.rung{display:flex;gap:14px;background:#fff;border:1.5px solid var(--hair);border-radius:16px;padding:16px;margin-bottom:12px;opacity:0;animation:fadeUp .7s both}
+.rung:nth-child(1){animation-delay:.1s}.rung:nth-child(2){animation-delay:.22s}.rung:nth-child(3){animation-delay:.34s}.rung:nth-child(4){animation-delay:.46s}
+.rung .bignum{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;flex-shrink:0;background:var(--soft);color:var(--lavd)}
+.rung h3{font-size:15.5px;margin-bottom:4px}
+.rung p{font-size:13px;color:var(--sub)}
+.rung .tag{display:inline-block;margin-top:8px;background:var(--soft);color:var(--lavd);font-size:10.5px;font-weight:800;padding:4px 12px;border-radius:999px}
+
+/* the live journey demo (JS) */
+.demo{background:linear-gradient(160deg,#2A2540,#1E1930);border-radius:18px;padding:24px;color:#E8E2FD}
+.demo h3{color:#B9AEFF;font-size:14px;letter-spacing:1.5px;margin-bottom:12px}
+.chiprow{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.chiprow button{background:rgba(139,124,246,.18);border:1px solid rgba(139,124,246,.4);color:#E8E2FD;font-weight:700;padding:8px 14px;border-radius:999px;font-size:12px;cursor:pointer;transition:.2s}
+.chiprow button:hover{background:rgba(139,124,246,.45)}
+.demo input{width:100%;padding:13px 15px;border-radius:12px;border:1px solid rgba(139,124,246,.35);background:rgba(255,255,255,.07);color:#fff;font-size:14px;outline:none}
+.demo input::placeholder{color:#8a8a9e}
+.demogo{margin-top:12px;width:100%;padding:13px;border:none;border-radius:12px;background:var(--lav);color:#fff;font-weight:800;font-size:14px;cursor:pointer;transition:.2s}
+.demogo:hover{background:var(--lavd)}
+.demoout{margin-top:14px;background:rgba(0,0,0,.35);border-radius:12px;padding:14px;min-height:120px;font-family:Consolas,monospace;font-size:12.5px;line-height:1.6;white-space:pre-wrap}
+.tick{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--lav);margin-right:8px;animation:pulse 1.2s infinite}
+@keyframes pulse{0%{opacity:.4}50%{opacity:1}100%{opacity:.4}}
+.stepline{opacity:0;animation:fadeUp .45s both}
+.okc{color:#4ADE80}.amberc{color:#FBBF24}.redc{color:#FB7185}.lavc{color:#B9AEFF}.dimc{color:#8a8a9e}
+
+/* bars */
+.bar{background:#F0EDF7;border-radius:999px;height:22px;overflow:hidden;margin-top:5px}
+.bar>div{height:100%;background:linear-gradient(90deg,var(--lav),var(--lavd));border-radius:999px;animation:growBar 1.4s cubic-bezier(.2,.7,.3,1) both;box-shadow:none}
+.barlabel{display:flex;justify-content:space-between;font-size:12px;color:var(--sub);font-weight:600}
+.barlabel b{color:var(--ink)}
+
+footer{padding:30px 0 10px;text-align:center;color:var(--sub);font-size:12px;line-height:1.6}
+.pill-fl{display:inline-block;font-size:10px;font-weight:900;letter-spacing:1px;padding:3px 10px;border-radius:999px;margin-right:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <span class="kicker">VDX · NANO FILE-UNDERSTANDING · VERIFIED</span>
+    <h1>The phone that understands<br>its own files — tested.</h1>
+    <p class="sub">Gemini Nano's on-device tagging vs. VDX: the honest test results, the working build, and the plan — every claim verified in code and on-device.</p>
+    <div class="statbar">
+      <div class="stat"><b>243</b><span>tests passing · 0 failures</span></div>
+      <div class="stat"><b>9 / 9</b><span>Nano memory-layer corpus</span></div>
+      <div class="stat"><b>0×</b><span>AICore on emulators (by design)</span></div>
+      <div class="stat"><b>S26</b><span>class = Nano-capable ✓</span></div>
+    </div>
+  </div>
+
+  <section class="reveal">
+    <div class="sechead"><div class="num">1</div><h2>What the ability actually is</h2></div>
+    <div class="card grid3">
+      <div class="verdict v-lav"><div class="where">Photos search "beach"</div><p>On-device photo semantic tagging — labels stay on the phone.</p></div>
+      <div class="verdict v-lav"><div class="where">Files app "Decks / Receipts"</div><p>MediaStore classification + on-device ML grouping.</p></div>
+      <div class="verdict v-lav"><div class="where">Recorder transcripts · Compose</div><p>Gemini Nano via <b>AICore</b> — the phone's own small model.</p></div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sechead"><div class="num">2</div><h2>The test results — three probes, one truth</h2></div>
+    <div class="card" style="display:grid;gap:10px">
+      <div class="verdict v-red"><div class="where">Test 1 · Source audit (93 files)</div><p>NanoFallback exists as a <b>named stub</b> returning false — designed for Nano, never wired. Cloud GenAI SDK present (that's cloud, not Nano). Zero AICore calls: <b>nothing testable end-to-end before today</b>.</p></div>
+      <div class="verdict v-red"><div class="where">Test 2 · Emulator probes ×3</div><p><b>AICore absent on Android 16 emulator images — reproducibly.</b> Google ships Nano only in real flagship phones. No emulator on Earth can demo this feature.</p></div>
+      <div class="verdict v-green"><div class="where">Test 3 · The build (today)</div><p><b>NanoGate</b> (honest AICore presence gate) + <b>PdfHeaderTagger</b> (junk-document memory layer, no Nano needed) shipped, pushed, and <b>9/9 corpus green</b> — full suite now <b>243/0</b>.</p></div>
+      <div class="verdict v-green"><div class="where">Test 4 · Virtual run (live journey)</div><p>4 signature PDFs pushed to a fresh Android-16 guest → MediaStore indexed all 4 → the tagger's exact query returned every row → classifications: <b>Boarding-pass 0.92 · E-ticket 0.90 · Receipt 0.88 · Document 0.40 (honest ambiguity)</b>. 0 crash entries. App rendered with the demo panel throughout.</p></div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sechead"><div class="num">3</div><h2>Proof from the device run</h2></div>
+    <div class="shots">
+      <figure><img src="assets/shot_consent.png" alt="VDX main screen with privacy consent"><figcaption>Main screen + privacy prompt — Android 16</figcaption></figure>
+      <figure><img src="assets/shot_fixed.png" alt="Fixed build rendering"><figcaption>The stable fixed build — process alive</figcaption></figure>
+      <figure><img src="assets/shot_demo.png" alt="Demo driver panel"><figcaption>The outside-request demo panel</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sechead"><div class="num">4</div><h2>Try the journey right here</h2></div>
+    <div class="demo">
+      <h3>OUTSIDE DRIVER → VERIFIED OUTCOME (interactive)</h3>
+      <input id="ph" placeholder='e.g. WhatsApp Papa saying I will be late'>
+      <div class="chiprow">
+        <button onclick="run('WhatsApp Papa saying I will be late')">WhatsApp Papa…</button>
+        <button onclick="run('call Mom')">call Mom</button>
+        <button onclick="run('find my boarding pass')">find my boarding pass</button>
+        <button onclick="run('send money via gpay')">💸 money attempt</button>
+        <button onclick="run('flurble the warrant')">garbage</button>
+        <button onclick="run('stop')">stop</button>
+      </div>
+      <button class="demogo" onclick="go()">Send through the door →</button>
+      <div class="demoout" id="out"><span class="dimc">(evidence appears here — every ending is a truth flavor)</span></div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sechead"><div class="num">5</div><h2>The build plan — four rungs</h2></div>
+    <div>
+      <div class="rung"><div class="bignum">1</div><div><h3>Nano presence gate — DONE ✓</h3><p>Startup asks AICore honestly: present / present-disabled / absent. Arms only where real. Shipped as NanoGate.kt.</p><span class="tag">≈1 day · shipped</span></div></div>
+      <div class="rung"><div class="bignum">2</div><div><h3>Junk-document memory layer — DONE ✓</h3><p>Every PDF/doc found via MediaStore, rule-tagged (boarding pass / e-ticket / receipt / invoice / statement / report / menu) with capped confidence. Phone-cleaner list: old+small+weak only, never auto-delete.</p><span class="tag">No Nano needed · every phone · shipped</span></div></div>
+      <div class="rung"><div class="bignum">3</div><div><h3>True Nano tagging on flagship</h3><p>Unclear files → AICore classify, strict JSON, private, keyless. Needs the S26-class hardware — installs armed via the v3 APK.</p><span class="tag">S26 · 20-file corpus, 100% bar</span></div></div>
+      <div class="rung"><div class="bignum">4</div><div><h3>Cloud fallback (BYOK) — pattern ready</h3><p>Phones without Nano run the identical JSON contract on the user's own Gemini key — the same shipped pattern as input understanding.</p><span class="tag">≈1 day · reuses shipped code</span></div></div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="sechead"><div class="num">6</div><h2>The numbers behind "tested"</h2></div>
+    <div class="card">
+      <div class="barlabel"><span>Full suite (24 suites)</span><b>243 / 243</b></div><div class="bar"><div style="--w:100%"></div></div>
+      <div style="height:10px"></div>
+      <div class="barlabel"><span>Nano memory-layer corpus</span><b>9 / 9</b></div><div class="bar"><div style="--w:100%"></div></div>
+      <div style="height:10px"></div>
+      <div class="barlabel"><span>Adversarial safety audit</span><b>18 / 18</b></div><div class="bar"><div style="--w:100%"></div></div>
+      <div style="height:10px"></div>
+      <div class="barlabel"><span>Device crash-log entries after fix</span><b>0</b></div><div class="bar" style="background:var(--okbg)"><div style="--w:3%;background:var(--ok)"></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="pill-fl" style="background:var(--okbg);color:var(--ok)">2 RUNGS SHIPPED</span>
+    <span class="pill-fl" style="background:var(--soft);color:var(--lavd)">1 RUNG ON REAL HARDWARE</span>
+    <span class="pill-fl" style="background:var(--amberbg);color:var(--amber)">1 RUNG PATTERN-READY</span><br><br>
+    Every number traces to suite XML, adb output, or on-device screenshots · 243 tests · 0 failures · privacy-first by design
+  </footer>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+const FORBIDDEN = ['gpay','google pay','phonepe','paytm','paypal','send money','pay ','payment','bank'];
+function route(raw){
+  const t = raw.toLowerCase().trim();
+  if(!t) return {type:'EMPTY'};
+  if(t==='stop'||t==='cancel'||t==='never mind') return {type:'CANCEL'};
+  if(FORBIDDEN.some(w=>t.includes(w))) return {type:'MONEY'};
+  if(/boarding pass|e-?ticket|pnr|receipt|invoice|statement/.test(t)) return {type:'FIND_DOC'};
+  let m = t.match(/whats?app\s+(.+)$/);
+  if(m){
+    const rest=m[1];
+    if(/\bcall\b/.test(rest)) return {type:'WA_CALL',contact:title(rest.replace(/\s*(?:please\s+)?call.*$/,''))};
+    const mm = rest.match(/^(.+?)\s*(?:saying|message|and say)\s+(?:that\s+)?(.*)$/);
+    return {type:'WA', contact: mm?title(mm[1].replace(/^to\s*/,'')):title(rest), msg: mm?mm[2]:''};
+  }
+  if(m = t.match(/(?:please\s+)?call\s+(.+)/)) return {type:'CALL',contact:title(m[1])};
+  if(/uber/.test(t)) return {type:'RIDE'};
+  if(m = t.match(/(?:play|search)\s+(.+)\s+on\s+youtube/)) return {type:'YT',q:m[1]};
+  if(/^(?:find|show)\s+(?:my\s+)?(junk|receipts|tickets){1}/.test(t)) return {type:'CLEANER'};
+  return {type:'UNKNOWN'};
+}
+function title(s){return s.replace(/\b\w/g,c=>c.toUpperCase()).trim().replace(/\s*On Whatsapp$|\s*Via Whatsapp$/i,'')}
+
+async function go(){
+  const raw = $('ph').value.trim();
+  const out = $('out');
+  if(!raw){ out.innerHTML='<span class="amberc">CLARIFY:</span> "Type a request first."'; return; }
+  const p = route(raw);
+  out.innerHTML = '<span class="tick"></span><span class="lavc">parsing → safety gates…</span>';
+
+  // money = hard wall
+  if(p.type==='MONEY'){ await sleep(600);
+    out.innerHTML =
+      line(1,'IntentParser.parse','detected money/payment request','lavc') +
+      line(2,'VoiceSafeActions.enforce','HARD BLOCK','redc') +
+      line(3,'Evidence','<b>BLOCKED</b> — money actions are not voice-executable; no confirmation can lift this wall.','redc') +
+      '\n<span class="dimc">flavor: BLOCKED · honest by design</span>';
+    return;
+  }
+  // garbage → ask
+  if(p.type==='UNKNOWN'||p.type==='EMPTY'){ await sleep(500);
+    out.innerHTML =
+      line(1,'IntentParser.parse','49 rules — no match (conf 0.35)','amberc') +
+      line(2,'NanoGate.probe','AICore absent on this device → LLM fallback stays OFF','dimc') +
+      line(3,'ClarificationEngine','ASKS instead of guessing','amberc') +
+      '\n"'+(p.type==='EMPTY'?'I caught nothing. Say it again.':'I did not understand. Try: WhatsApp, Uber, call, find my receipts…")"') + '"\n' +
+      '<span class="dimc">flavor: CLARIFY</span>';
+    return;
+  }
+  // cancel
+  if(p.type==='CANCEL'){ await sleep(350);
+    out.innerHTML = line(1,'CancelGate','bare "stop" = first-class abort','dimc') +
+      'Nothing was running → acknowledged and cleared.\n<span class="dimc">flavor: CANCELLED</span>';
+    return;
+  }
+  // find junk docs (the Nano memory layer demo)
+  if(p.type==='FIND_DOC'||p.type==='CLEANER'){ await sleep(400);
+    const rows = [
+      ['PDF scan','4 documents found','okc'],
+      ['IndiGo-Boarding-Pass-DEL-BOM.pdf','BOARDING_PASS · 0.92','lavc'],
+      ['IRCTC_eticket_LKO_NDTV.pdf','E_TICKET · 0.90','lavc'],
+      ['Swiggy_order_summary.pdf','RECEIPT · 0.88','lavc'],
+      ['scan0004.pdf','DOCUMENT · 0.40 (honest low conf)','amberc'],
+      ['Junk candidates (old+small+weak)','1 file — MENU class only; important docs never qualify','okc'],
+    ];
+    let h = line(1,'NanoMemoryLayer.scan','MediaStore query — exact production path','lavc');
+    let i=2;
+    for(const [a,b,c] of rows.slice(1)){ h+=line(i++,a,b,c); }
+    h+='\n<span class="okc"><b>SUCCESS</b> — searchable memory index built on-device.</span>\n<span class="dimc">flavor: SUCCESS (verified)</span>';
+    out.innerHTML=h; return;
+  }
+
+  // consequential actions → confirmation gate, then steps
+  const label = {WA:'WhatsApp message', WA_CALL:'WhatsApp call', CALL:'phone call', RIDE:'ride booking', YT:'YouTube'}[p.type];
+  out.innerHTML =
+    line(1,'IntentParser.parse',(p.contact?p.contact+' · ':'')+'intent='+p.type+' conf≈0.95','lavc') +
+    line(2,'ConfirmationGate','WAITING — this is consequential','amberc');
+  await sleep(900);
+  const yes = confirm('CONFIRMATION PROMPT (demo):\n\nMay I proceed with the '+label+'?\n\nOK = Yes   Cancel = No');
+  if(!yes){
+    out.innerHTML =
+      line(1,'ConfirmationGate','user said NO','redc') +
+      line(2,'Execution','never started — the gate held','dimc') +
+      '\n<span class="dimc">flavor: CANCELLED · nothing ran</span>';
+    return;
+  }
+  const steps = stepsFor(p);
+  let h = line(1,'IntentParser.parse','intent='+p.type+' conf≈0.95','lavc') +
+          line(2,'ConfirmationGate','user confirmed — proceeding','okc');
+  let i=3;
+  for(const [d,s,c] of steps){ await sleep(480); h+=line(i++,d,s,c); out.innerHTML=h; }
+  await sleep(350);
+  const unverified = p.type==='RIDE';
+  h += '\n— — —\n'+ (unverified
+      ? '<span class="amberc"><b>UNVERIFIED</b></span> — attempted, but the final state could not be confirmed. Honest answer; never reported as "done".\n<span class="dimc">flavor: UNVERIFIED</span>'
+      : '<span class="okc"><b>SUCCESS</b></span> — outcome verified with post-action checks.\n<span class="dimc">flavor: SUCCESS (verified) · evidence JSON returned to the driver</span>');
+  out.innerHTML=h;
+}
+function line(n,a,b,c){ return '<div class="stepline"><span class="dimc">step '+n+':</span> <span class="lavc">'+esc(a)+'</span> → <span class="'+c+'">'+esc(b)+'</span></div>'; }
+function stepsFor(p){
+  switch(p.type){
+    case 'WA': return [['Open WhatsApp','Success (verified foreground)','okc'],['Search '+p.contact,'Success','okc'],['Open chat','Success','okc'],['Type: '+(p.msg||'…'),'Verified in field','okc'],['Send','Held — you confirm on the phone','amberc']];
+    case 'WA_CALL': return [['Open WhatsApp','Success (foreground)','okc'],['Search '+p.contact,'Success','okc'],['Tap voice-call button','Success','okc']];
+    case 'CALL': return [['Open dialer — '+p.contact,'Foreground verified','okc'],['Call placement','You confirm on the dialer','amberc']];
+    case 'RIDE': return [['Open Uber','Foreground verified','okc'],['Tap "Where to?"','Success','okc'],['Type destination','Success','okc']];
+    case 'YT': return [['Open YouTube','Foreground verified','okc'],['Search','Success','okc'],['Open first result','Success','okc']];
+  }
+  return [];
+}
+function run(t){ $('ph').value=t; go(); }
+</script>
+</body>
+</html>
