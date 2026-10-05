@@ -197,6 +197,24 @@ footer{padding:30px 0 10px;text-align:center;color:var(--sub);font-size:12px;lin
 
 <script>
 const $ = id => document.getElementById(id);
+
+/* custom confirm (non-blocking, replaces native confirm) */
+function askConfirm(title, msg){
+  return new Promise(res=>{
+    const ov=document.createElement('div');
+    ov.style.cssText='position:fixed;inset:0;background:rgba(20,16,38,.55);display:flex;align-items:center;justify-content:center;z-index:9999';
+    ov.innerHTML='<div style="background:#fff;max-width:380px;width:88%;border-radius:18px;padding:22px;box-shadow:0 20px 60px rgba(36,31,58,.35)" class="pop">'+
+      '<div style="font-size:11px;font-weight:800;letter-spacing:1.6px;color:#6D5BE0;margin-bottom:8px">'+title+'</div>'+
+      '<div style="font-size:15px;color:#241F3A;font-weight:700;line-height:1.45;margin-bottom:16px">'+msg+'</div>'+
+      '<div style="display:flex;gap:10px">'+
+      '<button id=mYes style="flex:1;padding:12px;border:none;border-radius:12px;background:#8B7CF6;color:#fff;font-weight:800;cursor:pointer">Yes, proceed</button>'+
+      '<button id=mNo style="flex:1;padding:12px;border:none;border-radius:12px;background:#F0EDF7;color:#6B6485;font-weight:800;cursor:pointer">No, cancel</button></div></div>';
+    document.body.appendChild(ov);
+    ov.querySelector('#mYes').onclick=()=>{ov.remove();res(true)};
+    ov.querySelector('#mNo').onclick=()=>{ov.remove();res(false)};
+  });
+}
+
 const sleep = ms => new Promise(r=>setTimeout(r,ms));
 const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
@@ -277,7 +295,7 @@ async function go(){
     line(1,'IntentParser.parse',(p.contact?p.contact+' · ':'')+'intent='+p.type+' conf≈0.95','lavc') +
     line(2,'ConfirmationGate','WAITING — this is consequential','amberc');
   await sleep(900);
-  const yes = confirm('CONFIRMATION PROMPT (demo):\n\nMay I proceed with the '+label+'?\n\nOK = Yes   Cancel = No');
+  const yes = await askConfirm('CONFIRMATION PROMPT (demo)', 'May I proceed with the '+label+'?');
   if(!yes){
     out.innerHTML =
       line(1,'ConfirmationGate','user said NO','redc') +
