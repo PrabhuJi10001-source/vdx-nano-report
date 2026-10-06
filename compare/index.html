@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Comparison — Wispr Flow vs RobotHand</title>
+<style>
+:root{--bg:#F7F5FC;--ink:#241F3A;--sub:#6B6485;--lav:#8B7CF6;--lavd:#6D5BE0;--soft:#EDE9FE;--hair:#E6E1F4;--ok:#0E9F6E;--okbg:#D7F5E9;--amberbg:#FCF2D8;--amber:#D9A509}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);padding:26px 18px;line-height:1.5}
+.wrap{max-width:980px;margin:0 auto}
+.hero{background:linear-gradient(135deg,#fff,#E8E2FD);border-radius:24px;padding:32px;border:1px solid var(--hair);margin-bottom:20px}
+.kick{display:inline-block;background:var(--soft);color:var(--lavd);font-weight:800;font-size:11px;letter-spacing:2.5px;padding:7px 14px;border-radius:999px}
+h1{font-size:34px;margin:12px 0 6px}
+.hero p{color:var(--sub);font-size:15px}
+table{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1.5px solid var(--hair);border-radius:16px;overflow:hidden;font-size:13.5px}
+th{background:var(--soft);color:var(--lavd);text-align:left;padding:13px 14px;font-size:12px;letter-spacing:1px}
+th:first-child{width:170px}
+td{padding:11px 14px;border-top:1px solid var(--hair);vertical-align:top;line-height:1.5}
+td:first-child{font-weight:800;color:var(--ink);width:170px;background:#FBFAFE}
+td.w{color:#3f3a58;width:360px}
+td.r{width:360px}
+tr:nth-child(odd) td{background:#fff}
+tr:nth-child(even) td{background:#FAF9FE}
+.verdictband{margin-top:20px;background:#fff;border:1.5px solid var(--hair);border-radius:16px;padding:22px}
+.verdictband h2{color:var(--lavd);font-size:20px;margin-bottom:8px}
+.verdictband p{color:var(--sub);font-size:14px}
+.tag{display:inline-block;background:var(--okbg);color:var(--ok);font-weight:800;font-size:11px;padding:4px 12px;border-radius:999px;margin-right:8px;margin-top:10px}
+.tag.a{background:var(--amberbg);color:var(--amber)}
+footer{color:var(--sub);font-size:12px;text-align:center;padding:18px}
+@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.hero,.verdictband{animation:fu .7s both}
+</style>
+</head>
+<body><div class="wrap">
+  <div class="hero">
+    <span class="kick">VDX · COMPARISON SHEET</span>
+    <h1>Wispr Flow vs RobotHand — which is better?</h1>
+    <p>Honest answer up front: they are not rivals — they are two different instruments. Flow is a <b>writer</b>, RobotHand is a <b>doer</b>.</p>
+  </div>
+  <table id="t">
+    <tr><th>ASPECT</th><th>WISPR FLOW</th><th>ROBOTHAND (VDX)</th></tr>
+  </table>
+  <div class="verdictband">
+    <h2>The verdict (what "better" actually means here)</h2>
+    <p><b>Different jobs.</b> If the job is <i>writing</i> — emails, notes, prompts — Wispr Flow is the polished pro (you pay monthly for it). If the job is <i>doing</i> — send this, call her, book the airport, show my boarding pass, don't touch my money — RobotHand is the one that acts, with confirm-first laws and truthful evidence, free and private by default.</p>
+    <p style="margin-top:10px"><b>For VDX:</b> we just borrowed Flow's <i>look</i> (the glassy compact bubble). The right product move is Flow-style dictation <b>inside</b> the VDX bubble for the words + RobotHand <b>under</b> the same bubble for the actions — that is the combination no rival currently ships.</p>
+    <span class="tag">DOER: ROBOTHAND</span><span class="tag a">WRITER: WISPR FLOW</span>
+  </div>
+  <footer>One-page comparison · grounded in each product's documented behavior · 16 aspects</footer>
+</div>
+<script>
+const rows = [["", "Wispr Flow", "RobotHand (VDX)"], ["WHAT IT IS", "Voice DICTATION: speak \u2192 perfectly formatted text appears wherever you type", "Voice EXECUTOR: speak \u2192 real ACTIONS in your apps (send, call, book, launch)"], ["WORKS WHERE", "Any text field system-wide (keyboard layer)", "Across apps: navigates screens, taps buttons, types, confirms"], ["OUTCOME TYPE", "Text in a box", "Real-world results: message sent, call dialing, ride staged"], ["CONFIRMATION LAW", "None (text just appears; you edit)", "Confirm-before-consequential (calls/messages/rides ask first)"], ["MONEY GUARD", "N/A", "Hard blocklist: payment apps never voice-executable"], ["HONESTY ENGINE", "N/A (it's typing)", "Evidence: SUCCESS/UNVERIFIED/BLOCKED/CANCELLED, verified outcomes only"], ["ENGINE", "Cloud ASR (Whisper-class) + formatting LLM; paid tiers", "On-device ASR default (free, private) + optional BYOK keys; local-first 49-rule parser"], ["LANGUAGE", "Good EN + major langs; formatting polish is the selling point", "EN + Hindi + Hinglish shipped; Sarvam for Indic; LLM fallback for free phrasing"], ["PRIVACY", "Your speech \u2192 cloud processing (their policy)", "Speech stays on phone (keyless); counts-only telemetry, opt-in"], ["COST", "$12\u201315/mo subscription; closed source", "Free core; open source in the repo; BYOK optional"], ["SPEED", "Very fast (typing-parallel)", "Slower by design: confirm gates + app navigation"], ["RELIABILITY MODEL", "Dictation rarely 'fails to act' \u2014 worst case you delete text", "Actions can fail at app level (per-app capability registry handles honestly)"], ["UI PARADIGM", "Minimal pill (which VDX just emulated)", "Bubble + confirm cards + evidence panel (now Wispr-styled bubble)"], ["BEST FOR", "Writing: emails, notes, prompts, long text", "DOING: the 80% phone tasks \u2014 call/message/book/open/find"], ["WORST AT", "Taking actions (it cannot act \u2014 it only writes)", "Long-form dictation (not its job)"], ["VERDICT", "Writer's tool", "Doer's tool \u2014 the two combine: Flow the words, RobotHand the actions"]];
+const t = document.getElementById('t');
+rows.slice(1).forEach((r,i)=>{
+  const tr=document.createElement('tr');
+  tr.style.animation=`fu .5s ${0.05*i}s both`;
+  const d1=w => `<td class="${w?'w':'r'}">${typeof w==='string'?w:w}</td>`;
+  tr.innerHTML = `<td>${r[0]}</td><td class="w">${r[1]}</td><td class="r">${r[2]}</td>`;
+  t.appendChild(tr);
+});
+</script>
+</body></html>
