@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Full detail — Whisper vs Wispr Flow vs Handy vs RobotHand</title>
+<style>
+:root{--bg:#F7F5FC;--ink:#241F3A;--sub:#6B6485;--lav:#8B7CF6;--lavd:#6D5BE0;--soft:#EDE9FE;--hair:#E6E1F4;--ok:#0E9F6E;--okbg:#D7F5E9;--amberbg:#FCF2D8;--amber:#D9A509;--rose:#E7527B;--rosebg:#FADFE8}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);padding:26px 14px;line-height:1.5}
+.wrap{max-width:1120px;margin:0 auto}
+.hero{background:linear-gradient(135deg,#fff,#E8E2FD);border-radius:24px;padding:30px;border:1px solid var(--hair);margin-bottom:20px;animation:fu .7s both}
+.kick{display:inline-block;background:var(--soft);color:var(--lavd);font-weight:800;font-size:11px;letter-spacing:2.5px;padding:7px 14px;border-radius:999px}
+h1{font-size:32px;margin:12px 0 6px}
+.hero p{color:var(--sub);font-size:15px}
+.twrap{overflow-x:auto;border-radius:16px;border:1.5px solid var(--hair);background:#fff}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:860px}
+th{background:var(--soft);color:var(--lavd);text-align:left;padding:12px 12px;font-size:11.5px;letter-spacing:1px;position:sticky;top:0}
+th:first-child{width:150px}
+td{padding:10px 12px;border-top:1px solid var(--hair);vertical-align:top}
+td:first-child{font-weight:800;width:150px;background:#FBFAFE}
+tr:nth-child(odd) td{background:#fff}
+tr:nth-child(even) td{background:#FAF9FE}
+.b{background:#F4F1FD !important;font-weight:800}
+.verdict{margin-top:20px;background:#fff;border:1.5px solid var(--hair);border-radius:16px;padding:22px;animation:fu .7s .2s both}
+.verdict h2{color:var(--lavd);font-size:20px;margin-bottom:8px}
+.verdict p{color:var(--sub);font-size:14px;margin-bottom:8px}
+.tag{display:inline-block;font-weight:800;font-size:11px;padding:4px 12px;border-radius:999px;margin-right:8px;margin-top:10px}
+.t1{background:var(--soft);color:var(--lavd)} .t2{background:var(--okbg);color:var(--ok)} .t3{background:var(--amberbg);color:var(--amber)} .t4{background:var(--rosebg);color:var(--rose)}
+footer{color:var(--sub);font-size:12px;text-align:center;padding:18px}
+@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+</style></head><body><div class="wrap">
+<div class="hero">
+  <span class="kick">VDX · FULL COMPARISON</span>
+  <h1>Whisper · Wispr Flow · Handy · RobotHand</h1>
+  <p>Four names people mix up. <b>One is an engine</b> (Whisper), <b>two are dictation apps</b> (Flow &amp; Handy), <b>one is an executor</b> (RobotHand). Full detail, 16 aspects.</p>
+</div>
+<div class="twrap"><table id="t"><thead id="th"></thead><tbody id="tb"></tbody></table></div>
+<div class="verdict">
+  <h2>The verdict — what each is really for</h2>
+  <p><b>Whisper</b> is not an app you use — it's the <i>engine</i> inside others (including Handy). Judge it as a component.</p>
+  <p><b>Wispr Flow vs Handy</b> is the true dictation rivalry: Flow = paid polish + cloud speed; Handy = free + fully offline + open source. If privacy and price matter, Handy wins; if formatting elegance matters, Flow wins.</p>
+  <p><b>RobotHand</b> is the only one that <i>acts</i> — it doesn't write text into a box, it executes real phone tasks with confirm-first laws and truthful evidence. Dictators write; RobotHand does. For VDX the winning shape: Flow/Handy-class dictation inside the bubble, RobotHand execution underneath.</p>
+  <span class="tag t1">ENGINE: WHISPER</span><span class="tag t4">PAID POLISH: FLOW</span><span class="tag t3">FREE + OFFLINE: HANDY</span><span class="tag t2">EXECUTOR: ROBOTHAND</span>
+</div>
+<footer>Comparison grounded in each project's documented behavior (handy.computer / openwhispr / Wispr) · 16 aspects</footer>
+</div>
+<script>
+const rows=[["", "WHISPER (OpenAI engine)", "WISPR FLOW (product)", "HANDY (open-source app)", "ROBOTHAND (VDX)"], ["WHAT IT IS", "A speech-recognition MODEL (engine, not an app)", "Voice dictation APP built on cloud Whisper-class models", "Open-source dictation app, offline (Whisper/Parakeet)", "Voice EXECUTOR: speaks \u2192 real app actions"], ["PLATFORM", "Model/weights + API; embedded inside apps like Handy", "macOS/Windows desktop app (+dictates anywhere)", "Windows/macOS/Linux desktop (Tauri+Rust)", "Android phone (bubble overlay, in-app)"], ["HOW IT WORKS", "Audio \u2192 text via transformer ASR; API or local .bin/.gguf", "Hold hotkey \u2192 speak \u2192 release \u2192 formatted text pasted", "Hotkey (hold/toggle) \u2192 speak \u2192 release \u2192 text pasted locally", "Bubble tap \u2192 command \u2192 parse \u2192 confirm gate \u2192 APP EXECUTION"], ["CONFIRMATION LAW", "N/A", "None (text appears; you edit)", "None (text appears; you edit)", "CONFIRM-FIRST: calls/messages/rides ask before acting"], ["MONEY GUARD", "N/A", "N/A", "N/A", "Hard blocklist: payment apps never voice-executable"], ["HONESTY/EVIDENCE", "N/A", "N/A", "N/A", "SUCCESS/UNVERIFIED/BLOCKED/CANCELLED truth flavors"], ["PRIVACY", "Depends: API=cloud, local=private", "Cloud processing (their policy)", "Fully local (VAD=Silero; models download once)", "Fully on-device by default; BYOK only for upgrades"], ["COST", "API paid per use; weights free (MIT)", "US$12\u201315/mo; closed source", "FREE; MIT; open source", "FREE core; open in repo; BYOK optional"], ["SPEED", "Fast (esp. Turbo/Large-v3-turbo)", "Very fast (typing-parallel polish)", "Fast w/ Small/Turbo on GPU; Parakeet CPU-fast", "Slower by design (confirm + navigation)"], ["LANGUAGES", "99 languages incl. Hindi", "Major languages + great EN formatting", "99 (Whisper) + Parakeet auto-detect", "EN + Hindi + Hinglish + Sarvam Indic + LLM fallback"], ["RELIABILITY", "Battle-tested ASR", "Polished; rarely fails to transcribe", "Local hiccup possible (GPU/drivers); active dev", "Per-app capability registry; failures honest"], ["CAN TAKE ACTIONS?", "No \u2014 it only transcribes", "No \u2014 dictation only", "No \u2014 dictation only", "YES \u2014 the whole point (calls/messages/rides/files)"], ["PHONE?", "Via apps; no official mobile app", "Desktop-first (mobile listed as roadmap)", "Desktop only", "Android PHONE native \u2014 the S26 demo target"], ["OPEN SOURCE?", "Weights/API spec", "No", "Yes (MIT)", "Yes (the team's repo)"], ["BEST FOR", "Engine to embed in your own app", "Writers who pay for polish", "Privacy-first, free dictation on desktop", "DOING 80% of phone tasks + on-device memory layer"], ["WORST AT", "It's not an app; setup needed", "Acting (writes only); subscription; desktop-only", "Acting (writes only); desktop-only; no formatting LLM", "Long-form prose dictation (not its job)"]];
+const th=document.getElementById('th'), tb=document.getElementById('tb');
+const hr=document.createElement('tr'); rows[0].forEach(h=>{const c=document.createElement('th');c.textContent=h;th.appendChild(c)});
+rows.slice(1).forEach((r,i)=>{const tr=document.createElement('tr');tr.style.animation=`fu .4s ${0.045*i}s both`;
+ r.forEach((c,j)=>{const d=document.createElement('td'); if(j===0)d.className='b'; d.innerHTML=c; tr.appendChild(d)}); tb.appendChild(tr)});
+</script></body></html>
